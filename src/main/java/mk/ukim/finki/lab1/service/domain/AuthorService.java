@@ -1,8 +1,7 @@
 package mk.ukim.finki.lab1.service;
 
 
-import mk.ukim.finki.lab1.model.Author;
-import mk.ukim.finki.lab1.model.dto.AuthorDto;
+import mk.ukim.finki.lab1.model.domain.Author;
 
 import java.util.List;
 import java.util.Optional;

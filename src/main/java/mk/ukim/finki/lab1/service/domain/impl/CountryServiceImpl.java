@@ -1,8 +1,7 @@
 package mk.ukim.finki.lab1.service.impl;
 
 
-import mk.ukim.finki.lab1.model.Country;
-import mk.ukim.finki.lab1.model.dto.CountryDto;
+import mk.ukim.finki.lab1.model.domain.Country;
 import mk.ukim.finki.lab1.model.exceptions.CountryNotFoundException;
 import mk.ukim.finki.lab1.repository.CountryRepository;
 import mk.ukim.finki.lab1.service.CountryService;

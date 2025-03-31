@@ -1,10 +1,8 @@
 package mk.ukim.finki.lab1.service.impl;
 
 
-import mk.ukim.finki.lab1.model.Author;
-import mk.ukim.finki.lab1.model.Book;
-import mk.ukim.finki.lab1.model.dto.AuthorDto;
-import mk.ukim.finki.lab1.model.dto.BookDto;
+import mk.ukim.finki.lab1.model.domain.Author;
+import mk.ukim.finki.lab1.model.domain.Book;
 import mk.ukim.finki.lab1.model.enumerations.Category;
 import mk.ukim.finki.lab1.model.exceptions.BookAlreadyRented;
 import mk.ukim.finki.lab1.model.exceptions.BookNotFoundException;

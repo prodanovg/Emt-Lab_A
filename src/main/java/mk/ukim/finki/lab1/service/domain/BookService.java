@@ -1,8 +1,7 @@
 package mk.ukim.finki.lab1.service;
 
 
-import mk.ukim.finki.lab1.model.Book;
-import mk.ukim.finki.lab1.model.dto.BookDto;
+import mk.ukim.finki.lab1.model.domain.Book;
 import mk.ukim.finki.lab1.model.enumerations.Category;
 
 import java.util.List;

@@ -1,8 +1,7 @@
 package mk.ukim.finki.lab1.service;
 
 
-import mk.ukim.finki.lab1.model.Country;
-import mk.ukim.finki.lab1.model.dto.CountryDto;
+import mk.ukim.finki.lab1.model.domain.Country;
 
 import java.util.List;
 import java.util.Optional;
