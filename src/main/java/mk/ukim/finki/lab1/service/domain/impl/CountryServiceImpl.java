@@ -1,10 +1,10 @@
-package mk.ukim.finki.lab1.service.impl;
+package mk.ukim.finki.lab1.service.domain.impl;
 
 
 import mk.ukim.finki.lab1.model.domain.Country;
 import mk.ukim.finki.lab1.model.exceptions.CountryNotFoundException;
 import mk.ukim.finki.lab1.repository.CountryRepository;
-import mk.ukim.finki.lab1.service.CountryService;
+import mk.ukim.finki.lab1.service.domain.CountryService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -25,7 +25,7 @@ public class CountryServiceImpl implements CountryService {
     }
 
     @Override
-    public Optional<Country> save(CountryDto country) {
+    public Optional<Country> save(Country country) {
         return Optional.of(countryRepository.save(new Country(country.getName(), country.getContinent())));
     }
 
@@ -35,7 +35,7 @@ public class CountryServiceImpl implements CountryService {
     }
 
     @Override
-    public Optional<Country> update(Long id, CountryDto country) {
+    public Optional<Country> update(Long id, Country country) {
         return countryRepository.findById(id).map(existingCountry -> {
             if (country.getName() != null) {
                 existingCountry.setName(country.getName());

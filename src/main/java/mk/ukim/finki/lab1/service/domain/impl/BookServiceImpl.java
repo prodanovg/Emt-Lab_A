@@ -1,4 +1,4 @@
-package mk.ukim.finki.lab1.service.impl;
+package mk.ukim.finki.lab1.service.domain.impl;
 
 
 import mk.ukim.finki.lab1.model.domain.Author;
@@ -7,8 +7,8 @@ import mk.ukim.finki.lab1.model.enumerations.Category;
 import mk.ukim.finki.lab1.model.exceptions.BookAlreadyRented;
 import mk.ukim.finki.lab1.model.exceptions.BookNotFoundException;
 import mk.ukim.finki.lab1.repository.BookRepository;
-import mk.ukim.finki.lab1.service.AuthorService;
-import mk.ukim.finki.lab1.service.BookService;
+import mk.ukim.finki.lab1.service.domain.AuthorService;
+import mk.ukim.finki.lab1.service.domain.BookService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -30,24 +30,25 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public Optional<Book> save(BookDto book) {
-        if (book.getAuthor() != null
-                && authorService.findById(book.getAuthor()).isPresent()) {
-
-            Author author = authorService.findById(book.getAuthor()).get();
+    public Optional<Book> save(Book book) {
+        if (book.getAuthor() != null && authorService.findById(book.getAuthor().getId()).isPresent()) {
+            Author author = authorService.findById(book.getAuthor().getId()).get();
             Category category = Category.valueOf(book.getCategory().toString());
 
-            return Optional.of(bookRepository.save(new Book(
+
+            Book savedBook = bookRepository.save(new Book(
+                    book.getId(),
                     book.getName(),
+                    book.getDescription(),
                     category,
                     author,
                     book.getAvailableCopies(),
-                    book.getDescription(),
-                    book.getRented()
-            )));
+                    book.getRented() == null ? false : book.getRented()
+            ));
         }
         return Optional.empty();
     }
+
 
     @Override
     public Optional<Book> findById(Long id) {
@@ -55,7 +56,7 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public Optional<Book> update(Long id, BookDto book) {
+    public Optional<Book> update(Long id, Book book) {
         return bookRepository.findById(id).map(existingProduct -> {
             if (book.getName() != null) {
                 existingProduct.setName(book.getName());
@@ -63,8 +64,8 @@ public class BookServiceImpl implements BookService {
             if (book.getCategory() != null) {
                 existingProduct.setCategory(Category.valueOf(book.getCategory().toString()));
             }
-            if (book.getAuthor() != null && authorService.findById(book.getAuthor()).isPresent()) {
-                existingProduct.setAuthor(authorService.findById(book.getAuthor()).get());
+            if (book.getAuthor() != null && authorService.findById(book.getAuthor().getId()).isPresent()) {
+                existingProduct.setAuthor(authorService.findById(book.getAuthor().getId()).get());
             }
             if (book.getAvailableCopies() != 0) {
                 existingProduct.setAvailableCopies(book.getAvailableCopies());
@@ -108,6 +109,7 @@ public class BookServiceImpl implements BookService {
     public List<Book> findRelatedAuthorOrCategory(Long authorId, Category category) {
         return bookRepository.findAllByAuthorIdOrCategory(authorId, category);
     }
+
     //5 Soft delete
     @Override
     public void deleteById(Long id) {

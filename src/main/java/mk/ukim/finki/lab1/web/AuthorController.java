@@ -1,10 +1,7 @@
 package mk.ukim.finki.lab1.web;
 
-import mk.ukim.finki.lab1.model.Author;
-import mk.ukim.finki.lab1.model.Book;
-import mk.ukim.finki.lab1.model.dto.AuthorDto;
-import mk.ukim.finki.lab1.model.dto.BookDto;
-import mk.ukim.finki.lab1.service.AuthorService;
+import mk.ukim.finki.lab1.model.domain.Author;
+import mk.ukim.finki.lab1.service.domain.AuthorService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
