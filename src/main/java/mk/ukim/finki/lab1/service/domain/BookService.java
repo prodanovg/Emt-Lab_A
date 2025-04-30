@@ -17,7 +17,7 @@ public interface BookService {
 
     Optional<Book> update(Long id, Book book);
 
-    Optional<Book> rent(Long id, String username);
+//    Optional<Book> rent(Long id);
 
     List<Book> findByCategory(Category category);
 
@@ -27,5 +27,6 @@ public interface BookService {
 
     void deleteById(Long id);
 
+    Book findByName(String name);
 
 }

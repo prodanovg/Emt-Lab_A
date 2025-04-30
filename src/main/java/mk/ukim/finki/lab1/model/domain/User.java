@@ -7,8 +7,10 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import mk.ukim.finki.lab1.model.enumerations.Role;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 
 @Data
 @Entity
@@ -25,6 +27,9 @@ public class User implements UserDetails {
 
     private String surname;
 
+    @OneToOne(fetch = FetchType.EAGER)
+    private WishList wishList;
+
     private boolean isAccountNonExpired = true;
     private boolean isAccountNonLocked = true;
     private boolean isCredentialsNonExpired = true;
@@ -32,6 +37,8 @@ public class User implements UserDetails {
 
     @Enumerated(value = EnumType.STRING)
     private Role role;
+
+
 
     // default:
     // to-one -> FetchType.EAGER
@@ -42,12 +49,19 @@ public class User implements UserDetails {
     public User() {
     }
 
+// TODO fix only roleuser can have wishlist
     public User(String username, String password, String name, String surname, Role role) {
         this.username = username;
         this.password = password;
         this.name = name;
         this.surname = surname;
         this.role = role;
+//        if (role == Role.ROLE_USER) {
+//            this.wishList = wishList;
+//        } else {
+//            this.wishList = null;
+//        }
+
     }
 
     public User(String username, String password, String name, String surname) {

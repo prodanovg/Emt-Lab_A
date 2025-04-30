@@ -2,7 +2,6 @@ package mk.ukim.finki.lab1.service.application.impl;
 
 import mk.ukim.finki.lab1.model.domain.Author;
 import mk.ukim.finki.lab1.model.dto.CreateBookDto;
-import mk.ukim.finki.lab1.model.dto.DisplayAuthorDto;
 import mk.ukim.finki.lab1.model.dto.DisplayBookDto;
 import mk.ukim.finki.lab1.model.enumerations.Category;
 import mk.ukim.finki.lab1.service.application.BookApplicationService;
@@ -48,10 +47,10 @@ public class BookApplicationServiceImpl implements BookApplicationService {
         return  bookService.update(id, createBookDto.toBook(author.orElse(null))).map(DisplayBookDto::from);
     }
 
-    @Override
-    public Optional<DisplayBookDto> rent(Long id, String username) {
-        return bookService.rent(id, username).map(DisplayBookDto::from);
-    }
+//    @Override
+//    public Optional<DisplayBookDto> rent(Long id) {
+//        return bookService.rent(id).map(DisplayBookDto::from);
+//    }
 
     @Override
     public List<DisplayBookDto> findByCategory(Category category) {
@@ -71,5 +70,10 @@ public class BookApplicationServiceImpl implements BookApplicationService {
     @Override
     public void deleteById(Long id) {
         bookService.deleteById(id);
+    }
+
+    @Override
+    public DisplayBookDto findByName(String name) {
+        return DisplayBookDto.from(bookService.findByName(name));
     }
 }

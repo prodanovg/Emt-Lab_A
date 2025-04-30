@@ -9,6 +9,9 @@ import mk.ukim.finki.lab1.model.exceptions.BookNotFoundException;
 import mk.ukim.finki.lab1.repository.BookRepository;
 import mk.ukim.finki.lab1.service.domain.AuthorService;
 import mk.ukim.finki.lab1.service.domain.BookService;
+import mk.ukim.finki.lab1.service.domain.UserService;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,10 +21,12 @@ import java.util.Optional;
 public class BookServiceImpl implements BookService {
     private final BookRepository bookRepository;
     private final AuthorService authorService;
+    private final UserService userService;
 
-    public BookServiceImpl(BookRepository bookRepository, AuthorService authorService) {
+    public BookServiceImpl(BookRepository bookRepository, AuthorService authorService, UserService userService) {
         this.bookRepository = bookRepository;
         this.authorService = authorService;
+        this.userService = userService;
     }
 
     @Override
@@ -36,15 +41,14 @@ public class BookServiceImpl implements BookService {
             Category category = Category.valueOf(book.getCategory().toString());
 
 
-            Book savedBook = bookRepository.save(new Book(
+            return Optional.of(bookRepository.save(new Book(
                     book.getId(),
                     book.getName(),
                     book.getDescription(),
                     category,
                     author,
-                    book.getAvailableCopies(),
-                    book.getRented() == null ? false : book.getRented()
-            ));
+                    book.getAvailableCopies()
+            )));
         }
         return Optional.empty();
     }
@@ -52,7 +56,7 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public Optional<Book> findById(Long id) {
-        return Optional.of(bookRepository.findById(id).orElseThrow(BookNotFoundException::new));
+        return Optional.of(bookRepository.findById(id).orElseThrow(() -> new BookNotFoundException(id)));
     }
 
     @Override
@@ -70,27 +74,26 @@ public class BookServiceImpl implements BookService {
             if (book.getAvailableCopies() != 0) {
                 existingProduct.setAvailableCopies(book.getAvailableCopies());
             }
-            if (book.getRented() != null) {
-                existingProduct.setRented(book.getRented());
-            }
             return bookRepository.save(existingProduct);
         });
     }
 
-    //4
-    @Override
-    public Optional<Book> rent(Long id, String username) {
-        Optional<Book> book = bookRepository.findById(id);
-        return book.map(existingBook -> {
-            if (existingBook.getRented() == false) {
-                existingBook.setRented(true);
-                existingBook.setRentedBy(username);
-                return bookRepository.save(existingBook);
-            } else {
-                throw new BookAlreadyRented();
-            }
-        });
-    }
+//    //4
+//    @Override
+//    public Optional<Book> rent(Long id) {
+//        Optional<Book> book = bookRepository.findById(id);
+//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+//        String username = authentication.getName();
+//        return book.map(existingBook -> {
+//            if (existingBook.getRented() == false) {
+//                existingBook.setRented(true);
+//                existingBook.setRentedBy(username);
+//                return bookRepository.save(existingBook);
+//            } else {
+//                throw new BookAlreadyRented();
+//            }
+//        });
+//    }
 
 
     @Override
@@ -119,8 +122,13 @@ public class BookServiceImpl implements BookService {
             existingBook.setDeleted(true);
             bookRepository.save(existingBook);
         } else {
-            throw new BookNotFoundException();
+            throw new BookNotFoundException(id);
         }
+    }
+
+    @Override
+    public Book findByName(String name) {
+        return bookRepository.findByName(name);
     }
     // Hard delete
 //    @Override

@@ -13,8 +13,6 @@ public record DisplayBookDto(
         Category category,
         Long authorId,
         int availableCopies,
-        Boolean rented,
-        String rentedBy,
         Boolean deleted
 ) {
     public static DisplayBookDto from(Book book) {
@@ -24,8 +22,6 @@ public record DisplayBookDto(
                 book.getCategory(),
                 book.getAuthor().getId(),
                 book.getAvailableCopies(),
-                book.getRented(),
-                book.getRentedBy(),
                 book.getDeleted()
         );
     }
@@ -36,7 +32,7 @@ public record DisplayBookDto(
 
     public Book toBook(Long id, Author author) {
         if (author.getId().equals(authorId)) {
-            return new Book(id, name, description, category, author, availableCopies, rented);
+            return new Book(id, name, description, category, author, availableCopies);
         } else {
             throw new IllegalArgumentException("Author id does not match");
         }

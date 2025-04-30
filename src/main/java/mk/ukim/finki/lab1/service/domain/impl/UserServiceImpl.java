@@ -3,11 +3,14 @@ package mk.ukim.finki.lab1.service.domain.impl;
 import mk.ukim.finki.lab1.model.domain.User;
 import mk.ukim.finki.lab1.model.enumerations.Role;
 import mk.ukim.finki.lab1.model.exceptions.*;
+import mk.ukim.finki.lab1.model.projections.UserProjection;
 import mk.ukim.finki.lab1.repository.UserRepository;
 import mk.ukim.finki.lab1.service.domain.UserService;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -59,6 +62,9 @@ public class UserServiceImpl implements UserService {
                 username));
     }
 
-
+    @Override
+    public List<UserProjection> getAllUserNames() {
+        return userRepository.findAllProjectedBy();
+    }
 
 }
